@@ -215,10 +215,37 @@ class S3Browser {
     return $parent;
   }
 
-  // Sort with dirs first, then alphabetical ascending
+  /**
+   * States if an object is a folder or not
+   * Based on hsize property
+   * 
+   * @param mixed $object
+   * @return boolean
+   */
+  public static function isFolder($object){
+      return empty($object['hsize']);
+  }
+  
+  /**
+   * States if an object is a file or not
+   * 
+   * @param mixed $object
+   * @return boolean
+   */
+  public static function isFile($object){
+      return !S3Browser::isFolder($object);
+  }
+  
+  /**
+   * Sort with dirs first, then alphabetical ascending
+   * 
+   * @param mixed $a
+   * @param mixed $b
+   * @return int
+   */
   private static function sort($a, $b) {
-    $a_is_dir = isset($a['files']);
-    $b_is_dir = isset($b['files']);
+    $a_is_dir = S3Browser::isFolder($a);
+    $b_is_dir = S3Browser::isFolder($b);
 
     // dir > file
     if ($a_is_dir && !$b_is_dir) {

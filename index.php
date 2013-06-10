@@ -1,6 +1,7 @@
 <?php
 define('ROOT_DIR', dirname(__FILE__));
 require ROOT_DIR.'/include/S3Browser.php';
+require ROOT_DIR.'/include/Url.php';
 
 // Load config
 $configFile = ROOT_DIR.'/config.php';
@@ -18,6 +19,8 @@ if (!$config['bucket-name'] || !$config['s3-access-key'] ||
 $s3b = new S3Browser($config['bucket-name'], $config['s3-access-key'],
                      $config['s3-secret-key']);
 $s3b->enableCaching($config['cache-dir'], $config['cache-time']);
+
+$url = new Url($config);
 
 // Get current directory from URL
 $dir = str_replace($config['base-path'], '', $_SERVER['REQUEST_URI']);
